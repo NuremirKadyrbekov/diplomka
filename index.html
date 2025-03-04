@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ультра мед - Медицинский центр</title>
+  <!-- Подключение Font Awesome для иконок -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* Сброс стилей и базовые настройки */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Arial', sans-serif;
+      color: var(--text-color);
+      background: var(--bg-color);
+      line-height: 1.6;
+    }
+    :root {
+      --primary-color: #007BFF;
+      --secondary-color: #00C6FF;
+      --text-color: #333;
+      --bg-color: #fff;
+      --accent-color: #ff9800;
+    }
+    /* Header и навигация */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(255,255,255,0.95);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      transition: background 0.3s, padding 0.3s;
+    }
+    header.scrolled {
+      background: rgba(255,255,255,1);
+      padding: 10px 40px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .logo {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+    nav a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-size: 1em;
+      transition: color 0.3s, transform 0.3s;
+    }
+    nav a:hover {
+      color: var(--primary-color);
+      transform: translateY(-3px);
+    }
+    /* Бургер-меню для мобильных устройств */
+    .burger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .burger div {
+      width: 25px;
+      height: 3px;
+      background-color: var(--text-color);
+      margin: 4px 0;
+      transition: all 0.3s ease;
+    }
+    .mobile-nav {
+      display: none;
+      position: absolute;
+      top: 60px;
+      right: 40px;
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      flex-direction: column;
+      padding: 10px;
+      gap: 10px;
+      border-radius: 5px;
+    }
+    .mobile-nav.active {
+      display: flex;
+    }
+    .mobile-nav a {
+      padding: 10px;
+      display: block;
+      transition: background 0.3s;
+    }
+    .mobile-nav a:hover {
+      background: rgba(0,123,255,0.1);
+    }
+    /* Hero секция с параллакс эффектом */
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-align: center;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 120%;
+      background-image: url('https://via.placeholder.com/1920x1080');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      transform: translateY(-20%);
+      z-index: -2;
+      animation: zoomPan 20s infinite alternate;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: -1;
+    }
+    .hero h1 {
+      font-size: 3.5em;
+      animation: fadeInDown 1s ease forwards;
+      opacity: 0;
+    }
+    @keyframes fadeInDown {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes zoomPan {
+      0% { transform: scale(1) translateY(0); }
+      100% { transform: scale(1.1) translateY(-20px); }
+    }
+    /* Секции с эффектом появления при скролле */
+    section {
+      padding: 100px 40px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    section.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    section h2 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5em;
+      color: var(--primary-color);
+    }
+    section p {
+      max-width: 800px;
+      margin: 0 auto 20px;
+      font-size: 1.1em;
+      text-align: center;
+    }
+    /* Стили карточек для услуг */
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      flex: 1 1 250px;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+    }
+    .card i {
+      font-size: 3em;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+    .card h3 {
+      margin-bottom: 10px;
+      font-size: 1.5em;
+      color: var(--primary-color);
+    }
+    /* Стили карточек для врачей */
+    .doctors {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .doctor {
+      text-align: center;
+      flex: 1 1 200px;
+      transition: transform 0.3s;
+    }
+    .doctor:hover {
+      transform: translateY(-10px);
+    }
+    .doctor img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 10px;
+      border: 4px solid var(--primary-color);
+      transition: transform 0.3s;
+    }
+    .doctor img:hover {
+      transform: scale(1.05);
+    }
+    .doctor h4 {
+      font-size: 1.2em;
+      margin-bottom: 5px;
+      color: var(--primary-color);
+    }
+    /* Слайдер */
+    .slider {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .slides {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+    .slide {
+      min-width: 100%;
+      position: relative;
+    }
+    .slide img {
+      width: 100%;
+      display: block;
+    }
+    .slide::after {
+      content: "";
+      position: absolute;
+      top:0;
+      left:0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(3px);
+    }
+    .slider-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      z-index: 2;
+    }
+    .slider-nav button {
+      background: rgba(255,255,255,0.8);
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .slider-nav button:hover {
+      background: rgba(255,255,255,1);
+      transform: scale(1.1);
+    }
+    /* Стили форм */
+    .form-group {
+      margin-bottom: 20px;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      transition: border 0.3s;
+      font-size: 1em;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--primary-color);
+      outline: none;
+    }
+    button.primary {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      font-size: 1em;
+    }
+    button.primary:hover {
+      background: #0056b3;
+      transform: translateY(-3px);
+    }
+    /* Footer */
+    footer {
+      background: #333;
+      color: #fff;
+      padding: 40px;
+      text-align: center;
+    }
+    footer a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    footer a:hover {
+      color: var(--secondary-color);
+    }
+    /* Responsive стили */
+    @media(max-width: 768px) {
+      nav {
+        display: none;
+      }
+      .burger {
+        display: flex;
+      }
+      .cards, .doctors {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header с навигацией и бургер-меню -->
+  <header id="header">
+    <div class="logo">Ультра мед</div>
+    <nav>
+      <a href="#hero">Главная</a>
+      <a href="#about">О клинике</a>
+      <a href="#services">Услуги</a>
+      <a href="#doctors">Врачи</a>
+      <a href="#slider">Галерея</a>
+      <a href="#patients">Пациентам</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#contacts">Контакты</a>
+      <a href="#booking">Онлайн запись</a>
+    </nav>
+    <div class="burger" id="burger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#hero">Главная</a>
+      <a href="#about">О клинике</a>
+      <a href="#services">Услуги</a>
+      <a href="#doctors">Врачи</a>
+      <a href="#slider">Галерея</a>
+      <a href="#patients">Пациентам</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#contacts">Контакты</a>
+      <a href="#booking">Онлайн запись</a>
+    </div>
+  </header>
+  
+  <!-- Hero секция с параллакс эффектом -->
+  <section class="hero" id="hero">
+    <h1>Добро пожаловать в "Ультра мед"</h1>
+  </section>
+  
+  <!-- Секция "О клинике" -->
+  <section id="about">
+    <h2>О клинике</h2>
+    <p>Наша клиника оснащена современным оборудованием и предоставляет широкий спектр медицинских услуг. Опытные врачи и индивидуальный подход — залог вашего здоровья.</p>
+  </section>
+  
+  <!-- Секция "Услуги" -->
+  <section id="services">
+    <h2>Услуги</h2>
+    <div class="cards">
+      <div class="card">
+        <i class="fas fa-stethoscope"></i>
+        <h3>Консультации</h3>
+        <p>Профессиональные консультации специалистов.</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-x-ray"></i>
+        <h3>Диагностика</h3>
+        <p>Современные методы диагностики для точного выявления заболеваний.</p>
+      </div>
+      <div class="card">
+        <i class="fas fa-syringe"></i>
+        <h3>Лечение</h3>
+        <p>Эффективное лечение с использованием передовых технологий.</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Секция "Врачи" -->
+  <section id="doctors">
+    <h2>Врачи</h2>
+    <div class="doctors">
+      <div class="doctor">
+        <img src="https://via.placeholder.com/150" alt="Врач">
+        <h4>Др. Иванов</h4>
+        <p>Кардиолог</p>
+      </div>
+      <div class="doctor">
+        <img src="https://via.placeholder.com/150" alt="Врач">
+        <h4>Др. Петрова</h4>
+        <p>Невролог</p>
+      </div>
+      <div class="doctor">
+        <img src="https://via.placeholder.com/150" alt="Врач">
+        <h4>Др. Сидоров</h4>
+        <p>Хирург</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Секция "Галерея" со слайдером -->
+  <section id="slider">
+    <h2>Галерея</h2>
+    <div class="slider">
+      <div class="slides" id="slides">
+        <div class="slide">
+          <img src="https://via.placeholder.com/1200x600?text=Фото+1" alt="Фото 1">
+        </div>
+        <div class="slide">
+          <img src="https://via.placeholder.com/1200x600?text=Фото+2" alt="Фото 2">
+        </div>
+        <div class="slide">
+          <img src="https://via.placeholder.com/1200x600?text=Фото+3" alt="Фото 3">
+        </div>
+      </div>
+      <div class="slider-nav">
+        <button id="prev"><i class="fas fa-chevron-left"></i></button>
+        <button id="next"><i class="fas fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Секция "Пациентам" -->
+  <section id="patients">
+    <h2>Пациентам</h2>
+    <p>Для наших пациентов мы предоставляем комфортные условия, индивидуальное обслуживание и поддержку на всех этапах лечения.</p>
+  </section>
+  
+  <!-- Секция "Отзывы" -->
+  <section id="reviews">
+    <h2>Отзывы</h2>
+    <div style="max-width: 800px; margin: 0 auto;">
+      <blockquote style="border-left: 4px solid var(--primary-color); padding-left: 20px; margin-bottom: 20px;">
+        "Отличная клиника! Дружелюбный персонал и высококвалифицированные специалисты."
+        <footer>— Анна К.</footer>
+      </blockquote>
+      <blockquote style="border-left: 4px solid var(--primary-color); padding-left: 20px;">
+        "Быстрая запись и профессиональное обслуживание. Рекомендую!"
+        <footer>— Сергей М.</footer>
+      </blockquote>
+    </div>
+  </section>
+  
+  <!-- Секция "Контакты" -->
+  <section id="contacts">
+    <h2>Контакты</h2>
+    <div style="text-align: center;">
+      <p><i class="fas fa-map-marker-alt"></i> ул. Примерная, 123, Москва</p>
+      <p><i class="fas fa-phone"></i> +7 (495) 123-45-67</p>
+      <p><i class="fas fa-envelope"></i> info@ultramed.ru</p>
+    </div>
+  </section>
+  
+  <!-- Секция "Онлайн запись" -->
+  <section id="booking">
+    <h2>Онлайн запись</h2>
+    <div style="max-width: 600px; margin: 0 auto;">
+      <form>
+        <div class="form-group">
+          <label for="name">Имя</label>
+          <input type="text" id="name" placeholder="Ваше имя">
+        </div>
+        <div class="form-group">
+          <label for="phone">Телефон</label>
+          <input type="tel" id="phone" placeholder="+7 (___) ___-__-__">
+        </div>
+        <div class="form-group">
+          <label for="service">Выберите услугу</label>
+          <select id="service">
+            <option value="">Выберите услугу</option>
+            <option value="consultation">Консультация</option>
+            <option value="diagnostics">Диагностика</option>
+            <option value="treatment">Лечение</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="date">Дата и время</label>
+          <input type="datetime-local" id="date">
+        </div>
+        <button type="submit" class="primary">Записаться</button>
+      </form>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Ультра мед. Все права защищены.</p>
+    <p>
+      <a href="#hero">Главная</a> |
+      <a href="#about">О клинике</a> |
+      <a href="#services">Услуги</a> |
+      <a href="#contacts">Контакты</a>
+    </p>
+  </footer>
+  
+  <script>
+    // Переключение мобильного меню
+    const burger = document.getElementById('burger');
+    const mobileNav = document.getElementById('mobileNav');
+    burger.addEventListener('click', () => {
+      mobileNav.classList.toggle('active');
+    });
+    
+    // Эффект изменения стиля header при скролле
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('header');
+      if(window.scrollY > 50){
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+    
+    // Функциональность слайдера
+    const slides = document.getElementById('slides');
+    const slideCount = slides.children.length;
+    let currentIndex = 0;
+    
+    document.getElementById('next').addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % slideCount;
+      updateSlider();
+    });
+    
+    document.getElementById('prev').addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + slideCount) % slideCount;
+      updateSlider();
+    });
+    
+    function updateSlider(){
+      slides.style.transform = 'translateX(' + (-currentIndex * 100) + '%)';
+    }
+    
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % slideCount;
+      updateSlider();
+    }, 5000);
+    
+    // Intersection Observer для плавного появления секций при скролле
+    const sections = document.querySelectorAll('section');
+    const options = { threshold: 0.2 };
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, options);
+    
+    sections.forEach(section => observer.observe(section));
+  </script>
+</body>
+</html>

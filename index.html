@@ -11,6 +11,7 @@
     <style>
         /* Сброс стилей */
         @import url('https://fonts.googleapis.com/css2?family=Sofia+Sans+Semi+Condensed:ital,wght@0,1..1000;1,1..1000&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -255,6 +256,67 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
+        .slider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Контейнер слайдера */
+        .newSlider {
+            position: relative;
+            width: 900px;
+            height: 500px;
+            background: #fff;
+            overflow: hidden;
+            /* Обрезает всё, что выходит за рамки */
+        }
+
+        /* Общий стиль для каждого слайда */
+        .newSlider__slide {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 60%;
+            transform: translate(-50%, -50%);
+            transition: all 0.8s ease;
+            /* Плавная анимация */
+        }
+
+        /* Сами картинки внутри слайдов */
+        .newSlider__slide img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+        }
+
+        /* Левый слайд (слева, меньше, размытый) */
+        .newSlider__slide--left {
+            transform: translate(-130%, -50%) scale(0.8);
+            opacity: 0.5;
+            filter: blur(3px);
+            z-index: 1;
+            /* Чтобы не перекрывал центральный */
+        }
+
+        /* Центральный слайд (в фокусе, крупный) */
+        .newSlider__slide--center {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            filter: blur(0);
+            z-index: 2;
+            /* На переднем плане */
+        }
+
+        /* Правый слайд (справа, меньше, размытый) */
+        .newSlider__slide--right {
+            transform: translate(30%, -50%) scale(0.8);
+            opacity: 0.5;
+            filter: blur(3px);
+            z-index: 1;
+        }
 
         /* Навигация (точки) */
         .navigation {
@@ -397,9 +459,9 @@
             text-align: center;
             padding: 120px 20px 20px 20px;
             /* height: 80vh; */
-            
+
         }
-        
+
 
         #doctors h2 {
             font-size: 2.8em;
@@ -713,19 +775,22 @@
             .burger {
                 display: flex;
             }
-            .hero-content h1{
+
+            .hero-content h1 {
                 line-height: 50px;
                 font-size: 2.9rem;
             }
         }
-       @media (max-width:560px) {
-        /* #doctors{
+
+        @media (max-width:560px) {
+
+            /* #doctors{
             gap: 10px;
         } */
-         .doctor-card{
-            margin-bottom: 30px;
-         }
-       }
+            .doctor-card {
+                margin-bottom: 30px;
+            }
+        }
     </style>
 </head>
 
@@ -758,14 +823,11 @@
     <!-- HERO SECTION с динамическим слайдером -->
     <section class="hero" id="hero">
         <div class="hero-slider" id="hero-slider">
-            <div class="hero-slide active"
-                style="background-image: url('./img/her1.jpg');">
+            <div class="hero-slide active" style="background-image: url('./img/her1.jpg');">
             </div>
-            <div class="hero-slide"
-                style="background-image: url('./img/her2.jpg');">
+            <div class="hero-slide" style="background-image: url('./img/her2.jpg');">
             </div>
-            <div class="hero-slide"
-                style="background-image: url('./img/her3.jpg');">
+            <div class="hero-slide" style="background-image: url('./img/her3.jpg');">
             </div>
         </div>
         <div class="hero-content">
@@ -810,12 +872,14 @@
                 <div class="service-card">
                     <i class="fa-solid fa-chalkboard-user"></i>
                     <h3>УЗИ</h3>
-                    <p>Точные и безопасные диагностические исследования, позволяющие выявить заболевания на ранних стадиях и подобрать эффективное лечение.</p>
+                    <p>Точные и безопасные диагностические исследования, позволяющие выявить заболевания на ранних
+                        стадиях и подобрать эффективное лечение.</p>
                 </div>
                 <div class="service-card">
                     <i class="fa-solid fa-tooth"></i>
                     <h3>Стоматология</h3>
-                    <p>Профессиональные рекомендации и современный подход к лечению, обеспечивающие здоровье и красоту вашей улыбки.</p>
+                    <p>Профессиональные рекомендации и современный подход к лечению, обеспечивающие здоровье и красоту
+                        вашей улыбки.</p>
                 </div>
             </div>
         </div>
@@ -829,45 +893,61 @@
             <div class="about-text">
                 <h2>О нас</h2>
                 <p>
-                    Мы — ведущая медицинская клиника в Караколе , сочетающая инновационные методы диагностики и лечения с высочайшим
+                    Мы — ведущая медицинская клиника в Караколе , сочетающая инновационные методы диагностики и лечения
+                    с высочайшим
                     уровнем сервиса. Наши специалисты создают комфортные условия и заботятся о каждом пациенте,
                     используя передовые технологии.
                 </p>
             </div>
             <div class="about-image">
-                <img src="./img/bg3.avif"
-                    alt="Команда клиники">
+                <img src="./img/bg3.avif" alt="Команда клиники">
             </div>
         </div>
     </section>
-    
+
+    <section class="slider" id="slider">
+        <div class="newSlider">
+            <!-- Три слайда, изначально один в центре, остальные слева/справа -->
+            <div class="newSlider__slide newSlider__slide--center">
+                <img src="./img/slid1.jpg"
+                    alt="Slide 1" />
+            </div>
+            <div class="newSlider__slide newSlider__slide--right">
+                <img src="./img/slid2.jpg"
+                    alt="Slide 2" />
+            </div>
+            <div class="newSlider__slide newSlider__slide--left">
+                <img src="./img/slid3.jpg"
+                    alt="Slide 3" />
+            </div>
+        </div>
+    </section>
+
+
 
     <section id="doctors">
-            <h2>Наши врачи</h2>
-            <div class="doctors-grid">
-                <div class="doctor-card">
-                    <img src="./img/doc1.jpg"
-                        alt="Доктор Иванов">
-                    <h3>Доктор Уланов</h3>
-                    <p>Кардиолог с более чем 15-летним опытом работы.</p>
-                </div>
-                <div class="doctor-card">
-                    <img src="./img/doc2.jpg"
-                        alt="Доктор Петрова">
-                    <h3>Доктор Искаков</h3>
-                    <p>Невролог, специализирующаяся на лечении заболеваний нервной системы.</p>
-                </div>
-                <div class="doctor-card">
-                    <img src="./img/doc3.jpg"
-                        alt="Доктор Сидоров">
-                    <h3>Доктор Карымов</h3>
-                    <p>Хирург с точным и внимательным подходом.</p>
-                </div>
-                <div class="doctor-card">
-                    <img src="./img/doc4.jpg" alt="Доктор Смирнова">
-                    <h3>Доктор Акылбеков</h3>
-                    <p>Терапевт с многолетним опытом и индивидуальным подходом.</p>
-                </div>
+        <h2>Наши врачи</h2>
+        <div class="doctors-grid">
+            <div class="doctor-card">
+                <img src="./img/doc1.jpg" alt="Доктор Иванов">
+                <h3>Доктор Уланов</h3>
+                <p>Кардиолог с более чем 15-летним опытом работы.</p>
+            </div>
+            <div class="doctor-card">
+                <img src="./img/doc2.jpg" alt="Доктор Петрова">
+                <h3>Доктор Искаков</h3>
+                <p>Невролог, специализирующаяся на лечении заболеваний нервной системы.</p>
+            </div>
+            <div class="doctor-card">
+                <img src="./img/doc3.jpg" alt="Доктор Сидоров">
+                <h3>Доктор Карымов</h3>
+                <p>Хирург с точным и внимательным подходом.</p>
+            </div>
+            <div class="doctor-card">
+                <img src="./img/doc4.jpg" alt="Доктор Смирнова">
+                <h3>Доктор Акылбеков</h3>
+                <p>Терапевт с многолетним опытом и индивидуальным подходом.</p>
+            </div>
         </div>
 
     </section>
@@ -876,8 +956,7 @@
     <section id="patient">
         <div class="patient-content">
             <div class="patient-image">
-                <img src="./img/bg4.avif"
-                    alt="Команда клиники">
+                <img src="./img/bg4.avif" alt="Команда клиники">
             </div>
             <div class="patient-text">
                 <h2>Пациентам</h2>
@@ -892,7 +971,7 @@
         </div>
     </section>
 
-    
+
 
     <!-- Секция "Онлайн запись" -->
     <section id="appointment" class="appointment">
@@ -908,13 +987,16 @@
                 <option value="orthopedics">Ортопедия</option>
             </select>
             <textarea placeholder="Сообщение" rows="4"></textarea>
-            <button type="submit" >Отправить</button>
+            <button type="submit">Отправить</button>
         </form>
     </section>
 
     <!-- Секция "Карта" -->
     <section id="map" class="map">
-       <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d39781.658609809165!2d78.36110014058929!3d42.48625831861175!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38865b91e1f04c0b%3A0xeb5bfe3900e7ecfa!2z0JrQsNGA0LDQutC-0Ls!5e1!3m2!1sru!2skg!4v1741072754399!5m2!1sru!2skg" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d39781.658609809165!2d78.36110014058929!3d42.48625831861175!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38865b91e1f04c0b%3A0xeb5bfe3900e7ecfa!2z0JrQsNGA0LDQutC-0Ls!5e1!3m2!1sru!2skg!4v1741072754399!5m2!1sru!2skg"
+            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
     </section>
 
     <section id="reviews" class="reviews">
@@ -979,6 +1061,43 @@
 
     <script>
 
+        let slides = document.querySelectorAll('.newSlider__slide');
+        let currentIndex = 0;
+
+        // Функция, которая расставляет классы в зависимости от currentIndex
+        function showSlides() {
+            // Снимаем все классы --left, --center, --right
+            slides.forEach(slide => {
+                slide.classList.remove(
+                    'newSlider__slide--left',
+                    'newSlider__slide--center',
+                    'newSlider__slide--right'
+                );
+            });
+
+            // Рассчитываем индексы левого, центрального и правого слайда
+            const leftIndex = (currentIndex + slides.length - 1) % slides.length;
+            const centerIndex = currentIndex;
+            const rightIndex = (currentIndex + 1) % slides.length;
+
+            // Присваиваем нужные классы
+            slides[leftIndex].classList.add('newSlider__slide--left');
+            slides[centerIndex].classList.add('newSlider__slide--center');
+            slides[rightIndex].classList.add('newSlider__slide--right');
+        }
+
+        // Функция для перехода к следующему слайду
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % slides.length;
+            showSlides();
+        }
+
+        // Запускаем первоначальную расстановку
+        showSlides();
+
+        // Автоматическая смена слайдов каждые 3 секунды
+        setInterval(nextSlide, 3000);
+
         // Бургер-меню
         const burger = document.getElementById('burger');
         const navLinks = document.getElementById('nav-links');
@@ -1014,7 +1133,7 @@
             });
         });
 
-        const Send=()=>{
+        const Send = () => {
             alert('Вы успешно записались на приём!')
         }
     </script>
